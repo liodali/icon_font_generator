@@ -37,17 +37,18 @@ SvgToOtfResult svgToOtf({
 
   final svgList = [
     for (final e in svgMap.entries)
-      Svg.parse(e.key, e.value, ignoreShapes: ignoreShapes)
+      Svg.parse(e.key, e.value, ignoreShapes: ignoreShapes),
   ];
 
   if (!normalize) {
     for (var i = 1; i < svgList.length; i++) {
       if (svgList[i - 1].viewBox.height != svgList[i].viewBox.height) {
         logger.logOnce(
-            Level.warning,
-            'Some SVG files contain different view box height, '
-            'while normalization option is disabled. '
-            'This is not recommended.');
+          Level.warning,
+          'Some SVG files contain different view box height, '
+          'while normalization option is disabled. '
+          'This is not recommended.',
+        );
         break;
       }
     }

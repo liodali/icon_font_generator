@@ -5,7 +5,7 @@ import 'package:dart_style/dart_style.dart';
 import 'package:icon_font_generator/src/cli/arguments.dart';
 import 'package:icon_font_generator/src/cli/options.dart';
 import 'package:icon_font_generator/src/common/api.dart';
-import 'package:icon_font_generator/src/otf/io.dart';
+import 'package:icon_font_generator/src/otf/platform_rw.dart' show writeFontFile;
 import 'package:icon_font_generator/src/utils/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
@@ -13,7 +13,7 @@ import 'package:yaml/yaml.dart';
 final _argParser = ArgParser(allowTrailingOptions: true);
 final formatter = DartFormatter(
   pageWidth: 80,
-  fixes: StyleFix.all,
+  languageVersion: DartFormatter.latestLanguageVersion,
 );
 
 void main(List<String> args) {
@@ -55,16 +55,18 @@ void _run(CliArguments parsedArgs) {
     parsedArgs.classFile!.createSync(recursive: true);
   } else if (hasClassFile) {
     logger.v(
-        'Output file for a Flutter class already exists (${parsedArgs.classFile!.path}) - '
-        'overwriting it');
+      'Output file for a Flutter class already exists (${parsedArgs.classFile!.path}) - '
+      'overwriting it',
+    );
   }
 
   if (!parsedArgs.fontFile.existsSync()) {
     parsedArgs.fontFile.createSync(recursive: true);
   } else {
     logger.v(
-        'Output file for a font file already exists (${parsedArgs.fontFile.path}) - '
-        'overwriting it');
+      'Output file for a font file already exists (${parsedArgs.fontFile.path}) - '
+      'overwriting it',
+    );
   }
 
   final svgFileList = parsedArgs.svgDir
@@ -74,7 +76,8 @@ void _run(CliArguments parsedArgs) {
 
   if (svgFileList.isEmpty) {
     logger.w(
-        "The input directory doesn't contain any SVG file (${parsedArgs.svgDir.path}).");
+      "The input directory doesn't contain any SVG file (${parsedArgs.svgDir.path}).",
+    );
   }
 
   final svgMap = {
@@ -89,11 +92,13 @@ void _run(CliArguments parsedArgs) {
     fontName: parsedArgs.fontName,
   );
 
-  writeToFile(parsedArgs.fontFile.path, otfResult.font);
+  writeFontFile(parsedArgs.fontFile.path, otfResult.font);
 
   if (parsedArgs.classFile == null) {
-    logger.v('No output path for Flutter class was specified - '
-        'skipping class generation.');
+    logger.v(
+      'No output path for Flutter class was specified - '
+      'skipping class generation.',
+    );
   } else {
     final fontFileName = p.basename(parsedArgs.fontFile.path);
 

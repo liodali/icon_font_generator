@@ -4,21 +4,29 @@ version: 1.0.0+1
 publish_to: 'none'
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
-  flutter: '>=3.7.5 <4.0.0'
+  sdk: '>=3.9.2 <4.0.0'
+  flutter: '>=3.35.4 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  file_picker: ^10.3.3
+  flutter_svg: ^2.2.1
+  path_provider: ^2.1.5
+  icon_font_generator:
+    path: ../../
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
-  icon_font_generator:
-    path: ../../
+  flutter_lints: ^6.0.0
+dependency_overrides: 
+    meta: ^1.17.0
+
 
 flutter:
+  uses-material-design: true
   fonts:
     - family: Ui Icons
       fonts:

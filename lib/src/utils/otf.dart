@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:fixnum/fixnum.dart';
 import 'package:meta/meta.dart';
 
 import '../otf/table/head.dart';
@@ -69,8 +69,9 @@ int calculateTableChecksum(ByteData encodedTable) {
 }
 
 int calculateFontChecksum(ByteData byteData) {
-  return (kChecksumMagicNumber - calculateTableChecksum(byteData))
-      .toUnsigned(32);
+  return (kChecksumMagicNumber - calculateTableChecksum(byteData)).toUnsigned(
+    32,
+  );
 }
 
 int getPaddedTableSize(int actualSize) => (actualSize / 4).ceil() * 4;
@@ -125,8 +126,9 @@ extension OTFByteDateExt on ByteData {
 
   void setUFWord(int offset, int value) => setUint16(offset, value);
 
-  Uint8List getByteList(int offset, int length) => Uint8List.fromList(
-      [for (var i = 0; i < length; i++) getUint8(offset + i)]);
+  Uint8List getByteList(int offset, int length) => Uint8List.fromList([
+    for (var i = 0; i < length; i++) getUint8(offset + i),
+  ]);
 
   void setByteList(int offset, Uint8List list) {
     for (var i = 0; i < list.length; i++) {
@@ -153,7 +155,10 @@ extension OTFByteDateExt on ByteData {
 
   ByteData sublistView(int offset, [int? length]) {
     return ByteData.sublistView(
-        this, offset, length == null ? null : offset + length);
+      this,
+      offset,
+      length == null ? null : offset + length,
+    );
   }
 }
 
@@ -170,12 +175,12 @@ extension OTFStringExt on String {
 @immutable
 class Revision {
   const Revision(int? major, int? minor)
-      : major = major ?? 0,
-        minor = minor ?? 0;
+    : major = major ?? 0,
+      minor = minor ?? 0;
 
   const Revision.fromInt32(int revision)
-      : major = (revision >> 16) & 0xFFFF,
-        minor = revision & 0xFFFF;
+    : major = (revision >> 16) & 0xFFFF,
+      minor = revision & 0xFFFF;
 
   final int major;
   final int minor;

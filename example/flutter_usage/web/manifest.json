@@ -1,6 +1,6 @@
 {
-    "name": "flutter_usage",
-    "short_name": "flutter_usage",
+    "name": "icon_font_generator_example",
+    "short_name": "icon_font_generator_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
