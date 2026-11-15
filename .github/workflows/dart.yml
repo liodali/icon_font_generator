@@ -11,12 +11,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image:  google/dart:latest
-
+    # The `google/dart` Docker image was archived at Dart 2.15.1, but pubspec
+    # requires Dart >=3.9.2 <4.0.0 — so this job could never resolve the
+    # package. Use a real, current Dart SDK instead.
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+    - uses: dart-lang/setup-dart@2286a0c042b44434fe26d292bbce8d34f7ec662b # v1
     - name: Install dependencies
-      run: pub get
+      run: dart pub get
     - name: Run tests
-      run: pub run test 'test/test_all.dart'
+      run: dart run test 'test/test_all.dart'
